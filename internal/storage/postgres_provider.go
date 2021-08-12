@@ -20,7 +20,7 @@ type PostgreSQLProvider struct {
 func NewPostgreSQLProvider(configuration schema.PostgreSQLStorageConfiguration) *PostgreSQLProvider {
 	provider := PostgreSQLProvider{
 		SQLProvider{
-			name: "postgres",
+			name: postgres,
 
 			sqlUpgradesCreateTableStatements:        sqlUpgradeCreateTableStatements,
 			sqlUpgradesCreateTableIndexesStatements: sqlUpgradesCreateTableIndexesStatements,
@@ -77,7 +77,7 @@ func NewPostgreSQLProvider(configuration schema.PostgreSQLStorageConfiguration) 
 	args = append(args, fmt.Sprintf("connect_timeout=%d", int32(configuration.Timeout/time.Second)))
 	connectionString := strings.Join(args, " ")
 
-	db, err := sql.Open("pgx", connectionString)
+	db, err := sql.Open(pgx, connectionString)
 	if err != nil {
 		provider.log.Fatalf("Unable to connect to SQL database: %v", err)
 	}

@@ -3,6 +3,7 @@ package storage
 import (
 	"database/sql"
 	"fmt"
+	"runtime"
 
 	_ "modernc.org/sqlite" // Load the SQLite Driver used in the connection string.
 )
@@ -14,9 +15,15 @@ type SQLiteProvider struct {
 
 // NewSQLiteProvider constructs a SQLite provider.
 func NewSQLiteProvider(path string) *SQLiteProvider {
+	driver := sqlite
+
+	if runtime.GOOS == "freebsd" {
+		driver = sqlite3
+	}
+
 	provider := SQLiteProvider{
 		SQLProvider{
-			name: "sqlite",
+			name: sqlite,
 
 			sqlUpgradesCreateTableStatements:        sqlUpgradeCreateTableStatements,
 			sqlUpgradesCreateTableIndexesStatements: sqlUpgradesCreateTableIndexesStatements,
@@ -45,7 +52,7 @@ func NewSQLiteProvider(path string) *SQLiteProvider {
 		},
 	}
 
-	db, err := sql.Open("sqlite", path)
+	db, err := sql.Open(driver, path)
 	if err != nil {
 		provider.log.Fatalf("Unable to create SQL database %s: %s", path, err)
 	}

@@ -4,6 +4,14 @@ import (
 	"fmt"
 )
 
+const (
+	mysql    = "mysql"
+	pgx      = "pgx"
+	postgres = "postgres"
+	sqlite   = "sqlite"
+	sqlite3  = "sqlite3"
+)
+
 const storageSchemaCurrentVersion = SchemaVersion(1)
 const storageSchemaUpgradeMessage = "Storage schema upgraded to v"
 const storageSchemaUpgradeErrorText = "storage schema upgrade failed at v"

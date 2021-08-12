@@ -19,7 +19,7 @@ type MySQLProvider struct {
 func NewMySQLProvider(configuration schema.MySQLStorageConfiguration) *MySQLProvider {
 	provider := MySQLProvider{
 		SQLProvider{
-			name: "mysql",
+			name: mysql,
 
 			sqlUpgradesCreateTableStatements: sqlUpgradeCreateTableStatements,
 
@@ -72,7 +72,7 @@ func NewMySQLProvider(configuration schema.MySQLStorageConfiguration) *MySQLProv
 	connectionString += "?"
 	connectionString += fmt.Sprintf("timeout=%ds", int32(configuration.Timeout/time.Second))
 
-	db, err := sql.Open("mysql", connectionString)
+	db, err := sql.Open(mysql, connectionString)
 	if err != nil {
 		provider.log.Fatalf("Unable to connect to SQL database: %v", err)
 	}
